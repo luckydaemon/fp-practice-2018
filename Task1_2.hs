@@ -1,27 +1,38 @@
 module Task1_2 where
 
 import Todo(todo)
-
+factorial 0 = 1
+factorial n = n * factorial (n - 1)
 -- синус числа (формула Тейлора)
 sin :: Double -> Double
-sin x = todo
+sin x = x-x^3/factorial 3 + x^5/factorial 5 - x^7/factorial 7 
 
 -- косинус числа (формула Тейлора)
 cos :: Double -> Double
-cos x = todo
+cos x = 1 - x^2/factorial 2 + x^4/factorial 4 - x^6/factorial 6
 
 -- наибольший общий делитель двух чисел
 gcd :: Integer -> Integer -> Integer
-gcd x y = todo
+gcd x y  | (x > y) = gcd x y
+          | ((x `rem` y) == 0) = y
+          | otherwise = gcd y (x `rem` y)
 
 -- существует ли полный целочисленный квадрат в диапазоне [from, to)?
 doesSquareBetweenExist :: Integer -> Integer -> Bool
 doesSquareBetweenExist from to = todo
 
+
 -- является ли дата корректной с учётом количества дней в месяце и
 -- вискокосных годов?
 isDateCorrect :: Integer -> Integer -> Integer -> Bool
-isDateCorrect day month year = todo
+isDateCorrect day month year = day>0 && month>0 && month<13 && year>=0 && day <=
+    (if month `elem` [4,6,9,11] then 30
+     else 
+        if month == 2 then
+            if (year `mod` 400 == 0) || (year `mod` 100 /= 0) && 
+                (year `mod` 4 == 0) then 29
+            else 28
+        else 31)
 
 -- возведение числа в степень, duh
 -- готовые функции и плавающую арифметику использовать нельзя
@@ -30,7 +41,7 @@ pow x y = todo
 
 -- является ли данное число простым?
 isPrime :: Integer -> Bool
-isPrime x = todo
+isPrime x = null [ y | y <- [2..x - 1], x `mod`y  == 0]
 
 type Point2D = (Double, Double)
 
