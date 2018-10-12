@@ -1,5 +1,5 @@
 module Task1_2 where
-
+import Prelude hiding(gcd)
 import Todo(todo)
 factorial 0 = 1
 factorial n = n * factorial (n - 1)
