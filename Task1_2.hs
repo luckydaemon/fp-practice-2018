@@ -13,9 +13,10 @@ cos x = 1 - x^2/factorial 2 + x^4/factorial 4 - x^6/factorial 6
 
 -- наибольший общий делитель двух чисел
 gcd :: Integer -> Integer -> Integer
-gcd x y  | (x > y) = gcd x y
-          | ((x `rem` y) == 0) = y
-          | otherwise = gcd y (x `rem` y)
+gcd 0 0 = error "all zeros."
+gcd x y = gcd' (abs x) (abs y)
+    where gcd' x 0 = x
+          gcd' x y = gcd' y (x `rem` y)
 
 -- существует ли полный целочисленный квадрат в диапазоне [from, to)?
 doesSquareBetweenExist :: Integer -> Integer -> Bool
