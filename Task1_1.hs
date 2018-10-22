@@ -34,19 +34,13 @@ replaceVar varName replacement BinaryTerm{lhv=l,rhv=r,op=o} = BinaryTerm (replac
 evaluate :: Term -> Term
 evaluate IntConstant{intValue=x} =IntConstant x
 evaluate Variable{varName=x} =Variable x
-evaluate BinaryTerm {lhv=IntConstant 0,rhv=x, op=Plus} =evaluate x
-evaluate BinaryTerm {lhv=x,rhv=IntConstant 0, op=Plus} =evaluate x
-evaluate BinaryTerm {lhv=IntConstant 0,rhv=x, op=Minus} =evaluate x
-evaluate BinaryTerm {lhv=x,rhv=IntConstant 0, op=Minus} =evaluate x
-evaluate BinaryTerm {lhv=IntConstant 0,rhv=x, op=Multi} = IntConstant 0
-evaluate BinaryTerm {lhv=x,rhv=IntConstant 0, op=Multi} = IntConstant 0
-evaluate BinaryTerm {lhv=IntConstant 1,rhv=x, op=Multi} =evaluate x
-evaluate BinaryTerm {lhv=x,rhv=IntConstant 1, op=Multi} =evaluate x
-evaluate BinaryTerm {lhv=IntConstant l,rhv=IntConstant r, op=Plus}=IntConstant (l+r)
-evaluate BinaryTerm {lhv=IntConstant l,rhv=IntConstant r, op=Minus}=IntConstant (l-r)
-evaluate BinaryTerm {lhv=IntConstant l,rhv=IntConstant r, op=Multi}=IntConstant (l*r)
-evaluate BinaryTerm {lhv=l,rhv=Variable r, op=o}=(BinaryTerm (evaluate l) (Variable r) o)
-evaluate BinaryTerm {lhv=Variable l,rhv=r, op=o}=(BinaryTerm (Variable l) (evaluate r) o)
-evaluate BinaryTerm {lhv=l,rhv=IntConstant r, op=o}=(BinaryTerm (evaluate l) (IntConstant r) o)
-evaluate BinaryTerm {lhv=IntConstant l,rhv=r, op=o}=(BinaryTerm (IntConstant l) (evaluate r) o)
-evaluate BinaryTerm {lhv=l, rhv=r, op=o}=evaluate (BinaryTerm (evaluate l) (evaluate r) o)
+evaluate (BinaryTerm (IntConstant l) r o) | ((l==0)&& ((o==Plus)||(o==Minus))) = evaluate r
+                                          | ((l==0)&& (o==Multi)) = IntConstant 0
+                                          | ((l==1)&& (o==Multi)) = evaluate r
+evaluate (BinaryTerm l (IntConstant r) o) | ((r==0)&& ((o==Plus)||(o==Minus))) = evaluate l
+                                          | ((r==0)&& (o==Multi)) = IntConstant 0
+                                          | ((r==1)&& (o==Multi)) = evaluate l
+evaluate (BinaryTerm (IntConstant l) (IntConstant r) o) | (o==Plus) = IntConstant (l+r)
+                                                        | (o==Minus) = IntConstant (l-r)
+                                                        | (o==Multi) = IntConstant (l*r)
+evaluate (BinaryTerm l r o) = BinaryTerm (evaluate l) (evaluate r) o
