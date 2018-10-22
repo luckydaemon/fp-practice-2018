@@ -1,16 +1,18 @@
 module Task1_2 where
-import Prelude hiding(gcd)
+import Prelude hiding(gcd,sin,cos)
 import Todo(todo)
 factorial 0 = 1
 factorial n = n * factorial (n - 1)
 -- синус числа (формула Тейлора)
 sin :: Double -> Double
-sin x = x-x^3/factorial 3 + x^5/factorial 5 - x^7/factorial 7 
+sin x = sum [sinTerm x i | i <- [0..200]]
+      where sinTerm x i = (x^oddTerm / fromIntegral (factorial oddTerm))*(-1)^i
+                    where  oddTerm = 2*i + 1
 
 -- косинус числа (формула Тейлора)
 cos :: Double -> Double
-cos x = 1 - x^2/factorial 2 + x^4/factorial 4 - x^6/factorial 6
-
+cos x = sum [cosTerm x i | i <- [0..200]]
+      where cosTerm x i = (x^oddTerm / fromIntegral (factorial oddTerm))*(-1)^i
 -- наибольший общий делитель двух чисел
 gcd :: Integer -> Integer -> Integer
 gcd 0 0 = error "all zeros."
