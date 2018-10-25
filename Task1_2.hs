@@ -13,6 +13,7 @@ sin x = sum [sinTerm x i | i <- [0..200]]
 cos :: Double -> Double
 cos x = sum [cosTerm x i | i <- [0..200]]
       where cosTerm x i = (x^oddTerm / fromIntegral (factorial oddTerm))*(-1)^i
+                    where  oddTerm = 2*i
 -- наибольший общий делитель двух чисел
 gcd :: Integer -> Integer -> Integer
 gcd 0 0 = error "all zeros."
