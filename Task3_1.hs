@@ -85,5 +85,6 @@ instance Integral WeirdPeanoNumber where
                 | (b < 0) = negate a 
               x = divide_help_func (abs a) (abs b) y
 divide_help_func :: WeirdPeanoNumber -> WeirdPeanoNumber -> WeirdPeanoNumber -> WeirdPeanoNumber
-divide_help_func a b y | (a > b) = if (y < 0) then Pred (divide_help_func (a - b) b y) else Succ (divide_help_func (a - b) b y)
+divide_help_func a b y | (a > b) = if (y < 0) then Pred (divide_help_func (a - b) b y) 
+                                              else Succ (divide_help_func (a - b) b y)
                        | otherwise = Zero
