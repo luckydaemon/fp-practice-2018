@@ -1,16 +1,16 @@
 module Task3_2 where
 
-import Todo(todo)
+import Todo (todo)
 
 data ReverseList a = RNil | RCons (ReverseList a) a
 
 rlistToList :: ReverseList a -> [a]
 rlistToList RNil = []
-rlistToList (RCons t h) = h : (rlistToList t)
+rlistToList (RCons xs x) = (rlistToList xs) ++ [x]
 
 listToRList :: [a] -> ReverseList a
 listToRList [] = RNil
-listToRList (h : t) = RCons (listToRList t) h
+listToRList x = RCons (listToRList $ init x) (last x)
 
 -- Реализуйте классы Eq, Ord, Show, Monoid, Functor
 
