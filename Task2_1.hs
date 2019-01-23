@@ -88,6 +88,6 @@ kMean :: Integer -> TreeMap v -> (Integer, v)
 kMean i Empty = error "Nothing"
 kMean i (Leaf key value) | (i == 0) = (key,value)
                          | otherwise = error "Nothing"
-kMEan i (Node key value l r) | (treeSize l == i) = (key,value)
+kMean i (Node key value l r) | (treeSize l == i) = (key,value)
                              | (treeSize l < i) = kMean i l
                              | (treeSize l > i) = kMean (i - (treeSize l) - 1) r
