@@ -59,21 +59,14 @@ nearestLE :: Integer -> TreeMap v -> (Integer, v)
 nearestLE i Empty = error "Nothing"
 nearestLE i (Leaf key value) | (i >= key) = (key, value)
                              | otherwise = error "Nothing found"
-nearestLE i (Node key value l r) 
-    | (i == key) = (key,value)
-    | (i < key) = case l of (Leaf k v) | (k <= i) -> (k,v)
-                                                                    | otherwise -> error "Nothing found"
-    | (i < key) = case l of (Node k v nl nr)  | (i > k) -> case nr of (Node sk sv sl sr)  -> nearestLE i nr
-                                              | (i > k) -> case nr of Empty -> (k,v)
-                                              | (i > k) -> case nr of (Node sk sv sl sr) | (sk > i) -> (k,v)
-                                                                                         | otherwise -> nearestLE i nr
-    | (i > key) = case l of (Node k v nl nr) | (i < k) -> nearestLE i l    
-    | (i > key) = case r of Empty -> (key,value)
-    | (i > key) = case l of Empty -> error "Nothing"
-    | otherwise = case r of (Leaf k v) | (k < i) -> nearestLE i r
-                                       | otherwise -> (key,value)
-    | otherwise = case r of (Node k v nl nr) | (k < i) -> nearestLE i r
-                                             | otherwise -> (key,value)         
+nearestLE i (Node key value l r)
+    | (i == key) = (key,value) 
+    | (i < key) = nearestLE i l
+    | (i > key) = case r of  Empty -> (key,value) 
+                             (Leaf k v) -> nearestLE i (Leaf k v)
+                             (Node  k v _ _) | (i == k) -> (k,v)
+                             (Node  k v _ _) | (i /= k) -> nearestLE i r
+                                    
 -- Построение дерева из списка пар
 treeFromList :: [(Integer, v)] -> TreeMap v
 treeFromList lst = foldr insert Empty lst
