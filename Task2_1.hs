@@ -2,7 +2,7 @@ module Task2_1 where
 
 import Todo (todo)
 import Prelude hiding (lookup)
-
+import Control.Monad.Trans.State
 
 -- Ассоциативный массив на основе бинарного дерева поиска
 -- Ключи - Integer, значения - произвольного типа
