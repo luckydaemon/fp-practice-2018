@@ -99,7 +99,7 @@ kMean2 k (Leaf key value) | k == 0 = (key,value)
                           | otherwise = error "Bad index"
 
 kMean2 k f@(Node key value l r) | k < 0 = error "Bad index"
-                          | otherwise =  do
+                                | otherwise =  do
                                          let (index, state) = ((execState (kMean' k f) (0, (key,value))))
                                            in if (index <= k) then error "Index too large" else state
   where
@@ -107,14 +107,14 @@ kMean2 k f@(Node key value l r) | k < 0 = error "Bad index"
     kMean' _ Empty = return ()
     kMean' k (Leaf key value) = do  
                           (index, state) <- get
-                          if (index == k) then put  (index+1, (key,value))  else put (index+1, state)
+                          if (index == k) then put  (index + 1, (key,value))  else put (index + 1, state)
     kMean' k (Node key value l r) = do
       kMean' k l
       (index, state) <- get
-      if (index == k+1)
+      if (index == k + 1)
       then return ()
       else do
-           put (index+1, (key, value))
+           put (index + 1, (key, value))
            if (index == k)
            then return ()
            else do
